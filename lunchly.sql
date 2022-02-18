@@ -336,7 +336,7 @@ CREATE INDEX reservations_customer_id_idx ON public.reservations USING btree (cu
 CREATE INDEX reservations_start_at_idx ON public.reservations USING btree (start_at);
 
 
-\echo 'Delete and recreate lunchly db?'
+\echo 'Delete and recreate lunchly_test db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
 DROP DATABASE IF EXISTS lunchly_test;
