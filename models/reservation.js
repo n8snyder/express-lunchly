@@ -41,7 +41,7 @@ class Reservation {
   }
 
   /** Function to save updates or create new reservation */
-
+  // CR: no need to update customer_id, customer shouldn't have this
   async save() {
     if (this.id === undefined) {
       const result = await db.query(

@@ -57,7 +57,8 @@ class Customer {
   }
 
   /** filters customers by search term */
-
+  //CR: ln 71 backticks too. SQL CONCAT (comma separated strings)
+  // add ORDER BY
   static async filterByName(searchTerm) {
     const results = await db.query(
       `SELECT id, 
@@ -66,8 +67,8 @@ class Customer {
                 phone,
                 notes
           FROM customers
-          WHERE (UPPER(first_name) like UPPER($1)) OR
-                (UPPER(last_name) like UPPER($1))`,
+          WHERE (first_name ILIKE $1) OR
+                (last_name ILIKE $1)`,
       ['%' + searchTerm + '%']
     );
 
@@ -83,15 +84,20 @@ class Customer {
 
 
   /** Get top customer's by reservation count, default top ten*/
-
+  //CR: just group by primary key, make frontend ordered list
   static async filterTopCustomers(limit = 10) {
     const results = await db.query(
-      `SELECT c.id AS id, first_name AS "firstName", last_name AS "lastName", phone, c.notes
-            FROM reservations
-            JOIN customers AS c ON customer_id = c.id
-            GROUP BY c.id, first_name, last_name, phone, c.notes
-            ORDER BY COUNT(*) DESC
-            LIMIT $1`,
+      `SELECT 
+          c.id AS id, 
+          first_name AS "firstName", 
+          last_name AS "lastName", 
+          phone, 
+          c.notes
+        FROM reservations
+        JOIN customers AS c ON customer_id = c.id
+        GROUP BY c.id, first_name, last_name, phone, c.notes
+        ORDER BY COUNT(*) DESC
+        LIMIT $1`,
       [limit]
     );
     console.log(results.rows[0]);
