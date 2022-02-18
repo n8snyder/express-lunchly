@@ -41,6 +41,15 @@ router.post("/add/", async function (req, res, next) {
   return res.redirect(`/${customer.id}/`);
 });
 
+
+/** Show top customers (most reservations) */
+
+router.get("/top-ten/", async function (req, res, next) {
+  const customers = await Customer.filterTopCustomers(10);
+  return res.render("customer_list.html", { customers });
+});
+
+
 /** Show a customer, given their ID. */
 
 router.get("/:id/", async function (req, res, next) {
@@ -50,6 +59,7 @@ router.get("/:id/", async function (req, res, next) {
 
   return res.render("customer_detail.html", { customer, reservations });
 });
+
 
 /** Show form to edit a customer. */
 

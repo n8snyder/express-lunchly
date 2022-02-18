@@ -81,18 +81,20 @@ class Customer {
     return await Reservation.getReservationsForCustomer(this.id);
   }
 
+
   /** Get top customer's by reservation count, default top ten*/
 
   static async filterTopCustomers(limit = 10) {
     const results = await db.query(
-      `SELECT customer_id, first_name, last_name, phone, c.notes
+      `SELECT c.id AS id, first_name AS "firstName", last_name AS "lastName", phone, c.notes
             FROM reservations
             JOIN customers AS c ON customer_id = c.id
-            GROUP BY customer_id, first_name, last_name, phone, c.notes
+            GROUP BY c.id, first_name, last_name, phone, c.notes
             ORDER BY COUNT(*) DESC
             LIMIT $1`,
-            [limit]
+      [limit]
     );
+    console.log(results.rows[0]);
     return results.rows.map(c => new Customer(c));
   }
 
