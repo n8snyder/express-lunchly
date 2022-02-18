@@ -13,7 +13,7 @@ class Customer {
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
-    this.notes = notes;
+    this._notes = notes;
   }
 
   /** find all customers. */
@@ -53,7 +53,9 @@ class Customer {
       throw err;
     }
 
-    return new Customer(customer);
+    const newCustomer = new Customer(customer);
+
+    return newCustomer;
   }
 
   /** filters customers by search term */
@@ -136,6 +138,25 @@ class Customer {
   fullName() {
     return `${this.firstName} ${this.lastName}`;
   }
+
+  /** Function to retrieve notes value */
+
+  get notes() {
+    return this._notes;
+  }
+
+  /** function to set ensure notes value is not falsy */
+
+  set notes(val) {
+    if (!val) {
+      this._notes = "";
+    } else {
+      this._notes = val;
+    }
+  }
+
 }
+
+
 
 module.exports = Customer;

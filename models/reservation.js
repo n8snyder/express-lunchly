@@ -66,6 +66,22 @@ class Reservation {
     }
   }
 
+  /** Function to retrieve notes value */
+
+  get notes() {
+    return this._notes;
+  }
+
+  /** function to set ensure notes value is not falsy */
+
+  set notes(val) {
+    if (!val) {
+      this._notes = "";
+    } else {
+      this._notes = val;
+    }
+  }
+
 }
 
 
