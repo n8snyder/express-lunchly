@@ -66,8 +66,8 @@ class Customer {
                 phone,
                 notes
           FROM customers
-          WHERE (first_name like $1) OR
-                (last_name like $1)`,
+          WHERE (UPPER(first_name) like UPPER($1)) OR
+                (UPPER(last_name) like UPPER($1))`,
       ['%' + searchTerm + '%']
     );
 
@@ -80,6 +80,22 @@ class Customer {
   async getReservations() {
     return await Reservation.getReservationsForCustomer(this.id);
   }
+
+  /** Get top customer's by reservation count, default top ten*/
+
+  static async filterTopCustomers(limit = 10) {
+    const results = await db.query(
+      `SELECT customer_id, first_name, last_name, phone, c.notes
+            FROM reservations
+            JOIN customers AS c ON customer_id = c.id
+            GROUP BY customer_id, first_name, last_name, phone, c.notes
+            ORDER BY COUNT(*) DESC
+            LIMIT $1`,
+            [limit]
+    );
+    return results.rows.map(c => new Customer(c));
+  }
+
 
   /** save this customer. */
 
