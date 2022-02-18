@@ -82,6 +82,24 @@ class Reservation {
     }
   }
 
+  /** Getter for numGuests */
+
+  get numGuests() {
+    return this._numGuests;
+  }
+
+  /** Setter for numGuests. Can't be below 1. */
+
+  set numGuests(num) {
+    console.log(`Trying to set num: ${num}`);
+    if (+num < 1) {
+      console.log("ERROR: Not valid num:", num);
+      throw new RangeError("Guests must be 1 or more.");
+    }
+    this._numGuests = num;
+  }
+
+
 }
 
 
