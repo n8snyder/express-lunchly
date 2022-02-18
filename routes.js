@@ -41,12 +41,11 @@ router.post("/add/", async function (req, res, next) {
   return res.redirect(`/${customer.id}/`);
 });
 
-
 /** Show top customers (most reservations) */
 
 router.get("/top-ten/", async function (req, res, next) {
   const customers = await Customer.filterTopCustomers(10);
-  return res.render("customer_list.html", { customers });
+  return res.render("top_ten.html", { customers });
 });
 
 
