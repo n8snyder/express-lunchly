@@ -91,14 +91,26 @@ class Reservation {
   /** Setter for numGuests. Can't be below 1. */
 
   set numGuests(num) {
-    console.log(`Trying to set num: ${num}`);
     if (+num < 1) {
-      console.log("ERROR: Not valid num:", num);
       throw new RangeError("Guests must be 1 or more.");
     }
     this._numGuests = num;
   }
 
+  /** Getter for startAt */
+
+  get startAt() {
+    return this._startAt;
+  }
+
+  /** Setter for startAt */
+
+  set startAt(date) {
+    if (date.toString() === "Invalid Date") {
+      throw new TypeError("Not a Date type.");
+    }
+    this._startAt = new Date(date);
+  }
 
 }
 
