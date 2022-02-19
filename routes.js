@@ -100,4 +100,16 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
   return res.redirect(`/${customerId}/`);
 });
 
+/** Handle edditing an existing reservation */
+
+router.post("/reservations/:id/edit", async function (req, res, next) {
+  const reservation = await Reservation.get(req.params.id);
+  reservation.numGuests = req.body.numGuests;
+  reservation.startAt = req.body.startAt;
+  reservation.notes = req.body.notes;
+  await reservation.save();
+
+  return res.redirect(`/${reservation.customerId}/`);
+});
+
 module.exports = router;

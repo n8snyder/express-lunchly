@@ -40,6 +40,27 @@ class Reservation {
     return results.rows.map(row => new Reservation(row));
   }
 
+  /** Get reservation Id */
+  static async get(id) {
+    const results = await db.query(
+      `SELECT id,
+                  customer_id AS "customerId",
+                  num_guests AS "numGuests",
+                  start_at AS "startAt",
+                  notes AS "notes"
+           FROM reservations
+           WHERE id = $1`,
+      [id],
+    );
+    if (results.rows[0] === undefined) {
+      const err = new Error(`No such reservation: ${id}`);
+      err.status = 404;
+      throw err;
+    }
+
+    return new Reservation(results.rows[0]);
+  }
+
   /** Function to save updates or create new reservation */
   async save() {
     if (this.id === undefined) {
@@ -110,6 +131,22 @@ class Reservation {
       throw new TypeError("Not a Date type.");
     }
     this._startAt = new Date(date);
+  }
+
+  /** Getter for customerId */
+
+  get customerId() {
+    return this._customerId;
+  }
+
+  /** Setter for customerId */
+
+  set customerId(val) {
+    if (this.customerId === undefined) {
+      this._customerId = val;
+    } else {
+      throw new Error("CustomerId cannot be reassigned.");
+    }
   }
 
 }
